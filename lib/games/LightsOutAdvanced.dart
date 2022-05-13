@@ -3,17 +3,23 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 
-class LightsOut extends StatefulWidget {
-  const LightsOut({Key? key}) : super(key: key);
+class LightsOutAdvanced extends StatefulWidget {
+  const LightsOutAdvanced({Key? key}) : super(key: key);
 
   @override
-  _LightsOutState createState() => _LightsOutState();
+  _LightsOutAdvancedState createState() => _LightsOutAdvancedState();
 }
 
-class _LightsOutState extends State<LightsOut> {
+class _LightsOutAdvancedState extends State<LightsOutAdvanced> {
+
+  final Map<int, Color> colorMap = {
+    0 : Colors.red,
+    1 : Colors.green,
+    2 : Colors.blue,
+  };
 
 
-  List<List<bool>> lights = [];
+  List<List<int>> lights = [];
   String msg = "";
 
   @override
@@ -38,20 +44,20 @@ class _LightsOutState extends State<LightsOut> {
                       children: List<int>.generate(lights[firstDigit].length, (i) => i).map((secondDigit) =>
                           GestureDetector(
                             onTap: (){
-                              lights[firstDigit][secondDigit] = !lights[firstDigit][secondDigit];
+                              lights[firstDigit][secondDigit] = incrementColor(actColor: lights[firstDigit][secondDigit]);
 
                               if(firstDigit != 0){
-                                lights[firstDigit-1][secondDigit] = !lights[firstDigit-1][secondDigit];
+                                lights[firstDigit-1][secondDigit] = incrementColor(actColor: lights[firstDigit-1][secondDigit]);
                               }
                               if(secondDigit != 0){
-                                lights[firstDigit][secondDigit-1] = !lights[firstDigit][secondDigit-1];
+                                lights[firstDigit][secondDigit-1] = incrementColor(actColor: lights[firstDigit][secondDigit-1]);
                               }
 
                               if(firstDigit != lights.length-1){
-                                lights[firstDigit+1][secondDigit] = !lights[firstDigit+1][secondDigit];
+                                lights[firstDigit+1][secondDigit] = incrementColor(actColor: lights[firstDigit+1][secondDigit]);
                               }
                               if(secondDigit != lights.first.length-1){
-                                lights[firstDigit][secondDigit+1] = !lights[firstDigit][secondDigit+1];
+                                lights[firstDigit][secondDigit+1] = incrementColor(actColor: lights[firstDigit][secondDigit+1]);
                               }
 
                               checkIfUserWonTheGame();
@@ -64,7 +70,7 @@ class _LightsOutState extends State<LightsOut> {
                                 height: 60,
                                 width: 60,
                                 decoration: BoxDecoration(
-                                  color: lights[firstDigit][secondDigit] ? const Color(0xFFD3E03A) : const Color(0x22D3E03A),
+                                  color: colorMap[lights[firstDigit][secondDigit]],
                                   border: Border.all(
                                       color: Colors.black,
                                       width: 1),
@@ -100,16 +106,23 @@ class _LightsOutState extends State<LightsOut> {
 
   void resetLights(){
     Random r = Random();
-    lights = List.generate(5, (index) => List.generate(5, (index) => r.nextBool()));
+    lights = List.generate(5, (index) => List.generate(5, (index) => r.nextInt(3)));
+  }
+
+  int incrementColor({required int actColor}){
+    int returnValue = actColor + 1;
+    if(returnValue > 2) returnValue = 0;
+    return returnValue;
   }
 
   void checkIfUserWonTheGame({required }){
     bool allLightsOff = true;
+    int lastColor = lights.first.first;
     for(int x = 0; x < lights.length; x++){
       for(int y = 0; y < lights[x].length; y++){
-        if(lights[x][y]) {
+        if(lights[x][y] == lastColor) {
           allLightsOff = false;
-        break;
+          break;
         }
       }
       if(!allLightsOff) break;

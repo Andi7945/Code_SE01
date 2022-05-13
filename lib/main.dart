@@ -1,4 +1,5 @@
 import 'package:code_se01/games/LightsOut.dart';
+import 'package:code_se01/games/LightsOutAdvanced.dart';
 import 'package:code_se01/games/TikTak.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(title: 'CODE SE01'),
         '/tiktak': (context) => const TikTak(),
         '/lightsout': (context) => const LightsOut(),
+        '/lightsout_advanced': (context) => const LightsOutAdvanced(),
       }
     );
   }
@@ -89,6 +91,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 child: const Center(child: Text("Lights Out", style: TextStyle(color: Colors.white),)),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20, left: 20, top: 20),
+            child: GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, '/lightsout_advanced');
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: const BorderRadius.all(Radius.circular(15.0) //
+                  ),
+                ),
+                child: const Center(child: Text("Lights Out Advanced", style: TextStyle(color: Colors.white),)),
               ),
             ),
           )
