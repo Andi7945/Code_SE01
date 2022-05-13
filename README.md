@@ -2,6 +2,9 @@
 
 Mini-Games for CODE University Module SE01
 
+
+- LightsOut lib -> games -> LightsOut
+
 ## Getting Started
 
 I created for every game a own page
