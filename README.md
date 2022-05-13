@@ -5,6 +5,10 @@ Mini-Games for CODE University Module SE01
 
 - LightsOut lib -> games -> LightsOut
 
+
+## How to install flutter
+https://docs.flutter.dev/get-started/install
+
 ## Getting Started
 
 I created for every game a own page

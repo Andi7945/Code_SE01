@@ -114,10 +114,8 @@ class _LightsOutState extends State<LightsOut> {
 
 
   void resetLights(){
-    print("Entered");
     Random r = Random();
-    lights = List.generate(3, (index) => List.generate(3, (index) => r.nextBool()));
-    print("Exit");
+    lights = List.generate(5, (index) => List.generate(5, (index) => r.nextBool()));
   }
 
 
