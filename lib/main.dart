@@ -23,7 +23,38 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(title: 'CODE SE01'),
         '/tiktak': (context) => const TikTak(),
         '/lightsout': (context) => const LightsOut(),
-        '/lightsout_advanced': (context) => const LightsOutAdvanced(),
+        '/lightsout_advanced_3_3': (context) =>
+            LightsOutAdvanced(
+              grid_Y: 3,
+              grid_x: 3,
+              colorMap: const {
+                0 : Colors.red,
+                1 : Colors.green,
+                2 : Colors.blue,
+              },
+            ),
+        '/lightsout_advanced_4_3': (context) =>
+            LightsOutAdvanced(
+              grid_Y: 4,
+              grid_x: 4,
+              colorMap: const {
+                0 : Colors.red,
+                1 : Colors.green,
+                2 : Colors.blue,
+              },
+            ),
+        '/lightsout_advanced_4_4': (context) =>
+            LightsOutAdvanced(
+              grid_Y: 4,
+              grid_x: 4,
+              colorMap: const {
+                0 : Colors.red,
+                1 : Colors.green,
+                2 : Colors.blue,
+                3 : Colors.purple,
+                4 : Colors.yellowAccent
+              },
+            ),
       }
     );
   }
@@ -98,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(right: 20, left: 20, top: 20),
             child: GestureDetector(
               onTap: (){
-                Navigator.pushNamed(context, '/lightsout_advanced');
+                Navigator.pushNamed(context, '/lightsout_advanced_3_3');
               },
               child: Container(
                 height: 40,
@@ -108,7 +139,43 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: const BorderRadius.all(Radius.circular(15.0) //
                   ),
                 ),
-                child: const Center(child: Text("Lights Out Advanced", style: TextStyle(color: Colors.white),)),
+                child: const Center(child: Text("Lights Out 3x3 3 Colors", style: TextStyle(color: Colors.white),)),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20, left: 20, top: 20),
+            child: GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, '/lightsout_advanced_4_3');
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: const BorderRadius.all(Radius.circular(15.0) //
+                  ),
+                ),
+                child: const Center(child: Text("Lights Out 4x4 3 Colors", style: TextStyle(color: Colors.white),)),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20, left: 20, top: 20),
+            child: GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, '/lightsout_advanced_4_4');
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: const BorderRadius.all(Radius.circular(15.0) //
+                  ),
+                ),
+                child: const Center(child: Text("Lights Out 4x4 4 Colors", style: TextStyle(color: Colors.white),)),
               ),
             ),
           )

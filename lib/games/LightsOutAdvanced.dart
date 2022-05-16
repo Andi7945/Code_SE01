@@ -1,13 +1,15 @@
 import 'dart:core';
-import 'dart:core';
-import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 
 
 class LightsOutAdvanced extends StatefulWidget {
-  const LightsOutAdvanced({Key? key}) : super(key: key);
+  LightsOutAdvanced({Key? key, required this.colorMap, required this.grid_x, required this.grid_Y}) : super(key: key);
+  late final Map<int, Color> colorMap;
+  late final int grid_x;
+  late final int grid_Y;
+
 
   @override
   LightsOutAdvancedState createState() => LightsOutAdvancedState();
@@ -15,17 +17,10 @@ class LightsOutAdvanced extends StatefulWidget {
 
 class LightsOutAdvancedState extends State<LightsOutAdvanced> {
 
-  final Map<int, Color> colorMap = {
-    0 : Colors.red,
-    1 : Colors.green,
-    2 : Colors.blue,
-  };
-
-  int grit_x = 3;
-  int grid_Y = 3;
 
   List<List<int>> lights = [];
   String msg = "";
+  String msg2 = "";
   int counter = 0;
 
   //first: interation //second: x && y
@@ -69,6 +64,7 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
                               counter++;
                               lights = tabOnOneLight(lightsY: lights, firstDigit: firstDigit, secondDigit: secondDigit);
                               checkIfUserWonTheGame(lights: lights);
+                              msg2 = "";
                               setState(() {});
                             },
                             child: Padding(
@@ -78,7 +74,7 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
                                 height: 60,
                                 width: 60,
                                 decoration: BoxDecoration(
-                                  color: colorMap[lights[firstDigit][secondDigit]],
+                                  color: widget.colorMap[lights[firstDigit][secondDigit]],
                                   border: Border.all(
                                       color: isWinnterPath(count: counter, x: firstDigit, y: secondDigit) ? Colors.yellow : Colors.black ,
                                       width: isWinnterPath(count: counter, x: firstDigit, y: secondDigit) ? 6 : 1),
@@ -109,7 +105,7 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
               const SizedBox(height: 20,),
               ElevatedButton(onPressed: (){
                 setState(() {
-                  resetLightsDoable(level: 3);
+                  resetLightsDoable(level: 5);
                   winnerPath = [];
                   counter = 0;
                   msg = "";
@@ -120,13 +116,14 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
               ElevatedButton(onPressed: (){
                 setState(() {
                   counter = 0;
-                  winnerPath = testIfDoable(depth: 6, lightsX: lights);
+                  winnerPath = testIfDoable(depth: 5, lightsX: lights);
                   msg = "";
                 });
 
               }, child: const Text("Test if game is duable")),
 
               const SizedBox(height: 20,),
+              Text(msg2, style: const TextStyle(color: Colors.red),),
             ],
           ),
         )
@@ -144,6 +141,7 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
 
   //z   ligts array
   List<Coordinates> testIfDoable({required int depth, required List<List<int>> lightsX}){
+    msg2 = "";
     //remove connection from lights -> deep copy
     List<List<int>> deepLights = [];
     for (var element in lightsX) {
@@ -231,7 +229,6 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
                   secondDigit: y));
             }
             if(checkIfUserWonTheGame(lights: resultImageArray.last)){
-              print("in #######################");
               List<Coordinates> retValue = [Coordinates(clicked_x: x, clicked_y: y)];
               int bevorImagePos = sqer;
               for(; z > 1;z--){
@@ -239,14 +236,13 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
                 List<int> xyLoop = getPositionFromPos(actNumber: bevorImagePos, imageArrayLength: arrayLength);
                 retValue.add(Coordinates(clicked_x: xyLoop[0], clicked_y: xyLoop[1]));
               }
-              print("out #######################");
               return retValue;
             }
          }
           }
         }
       }
-
+    msg2 = "No Path found... Testet " + depth.toString() +" Times";
     return [];
   }
 
@@ -254,7 +250,7 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
   void resetLightsDoable({required level}){
     Random b = Random();
     final int c =  b.nextInt(3);
-    lights = List.generate(grit_x, (index) => List.generate(grid_Y, (index) => c));
+    lights = List.generate(widget.grid_x, (index) => List.generate(widget.grid_Y, (index) => c));
     for(int x = 0; x < level; x++){
       Random r = Random();
       lights = tabOnOneLightBackwards(lights: lights, firstDigit: r.nextInt(lights.length), secondDigit: r.nextInt(lights.first.length));
@@ -263,18 +259,18 @@ class LightsOutAdvancedState extends State<LightsOutAdvanced> {
 
   void resetLights(){
     Random r = Random();
-    lights = List.generate(grit_x, (index) => List.generate(grid_Y, (index) => r.nextInt(3)));
+    lights = List.generate(widget.grid_x, (index) => List.generate(widget.grid_Y, (index) => r.nextInt(widget.colorMap.length)));
   }
 
   int incrementColor({required int actColor}){
     int returnValue = actColor + 1;
-    if(returnValue > 2) returnValue = 0;
+    if(returnValue > (widget.colorMap.length-1)) returnValue = 0;
     return returnValue;
   }
 
   int decrementColor({required int actColor}){
     int returnValue = actColor - 1;
-    if(returnValue < 0) returnValue = 2;
+    if(returnValue < 0) returnValue = widget.colorMap.length-1;
     return returnValue;
   }
 
