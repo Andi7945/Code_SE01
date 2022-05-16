@@ -100,7 +100,7 @@ class _LightsOutState extends State<LightsOut> {
 
   void resetLights(){
     Random r = Random();
-    lights = List.generate(5, (index) => List.generate(5, (index) => r.nextBool()));
+    lights = List.generate(3, (index) => List.generate(3, (index) => r.nextBool()));
   }
 
   void checkIfUserWonTheGame({required }){
